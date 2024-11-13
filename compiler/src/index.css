@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Outfit:wght@100..900&display=swap');
+
+body {
+  margin: 0;
+  font-family: "Manrope", serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: "Outfit", serif;
+}
+
+.main-container{
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  font-family: "Outfit", serif;
+  align-items: start;
+}
+
+.main-container > div {
+  margin: 10px;
+  width: 30%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.1);
+  transition: 
+    box-shadow 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
+}
+
+.main-container > div:hover {
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.2);
+  transform: scale(1.05);
+}
+
+.main-container > div > h2 {
+  margin: 0;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+  border-radius: 5px 5px 0 0;
+}
+
+.main-container > div > p {
+  padding: 10px;
+}
+
+.main-container > div > a {
+  display: block;
+  padding: 10px;
+  text-align: center;
+  background-color: #f0f0f0;
+  border-top: 1px solid #ccc;
+  border-radius: 0 0 5px 5px;
+  text-decoration: none;
+  color: #333;
+}
+
+.main-container > div > a:hover {
+  background-color: #e0e0e0;
+}
+
+.main-container .relative {
+  width: 100%;
+}
+
+.main-container .group {
+  width: 100%;
+  min-height: 80px;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-color, #fff);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.main-container .rounded-full {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.main-container .flex-1 {
+  flex: 1;
+  min-width: 0;
+}
+
+.main-container h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.main-container .text-xs {
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+.main-container .w-px {
+  height: 24px;
+  margin-left: calc(20px + 1rem);
+  background-color: var(--line-color, #e5e7eb);
+}
+
+.main-container .group:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.main-container .animate-pulse {
+  border-left: 4px solid var(--primary-color, #3b82f6);
+}
+
+.examples-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.examples-section button {
+  min-width: 150px;
+  transition: all 0.3s ease;
+}
+
+.examples-section button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+:root {
+  --primary-color: #3b82f6;
+  --bg-color: #ffffff;
+  --line-color: #e5e7eb;
+}
+

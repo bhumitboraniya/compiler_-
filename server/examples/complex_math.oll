@@ -1,0 +1,12 @@
+PUSH 100
+PUSH 20
+DIV        // 100 / 20 = 5
+PUSH 3
+MUL        // 5 * 3 = 15
+PUSH 25
+PUSH 5
+DIV        // 25 / 5 = 5
+ADD        // 15 + 5 = 20
+PRINT "Complex calculation result:"
+PRINT
+HALT

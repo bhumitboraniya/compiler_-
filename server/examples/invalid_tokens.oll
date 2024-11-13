@@ -1,0 +1,4 @@
+PUSH 10
+PUSH "abc"  // Error: Invalid number
+ADD
+HALT

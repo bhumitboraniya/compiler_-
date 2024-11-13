@@ -1,0 +1,10 @@
+PUSH 20
+PUSH 4
+DIV        // 20 / 4 = 5
+PUSH 3
+MUL        // 5 * 3 = 15
+PUSH 10
+SUB        // 15 - 10 = 5
+PRINT "Result after nested ops:"
+PRINT
+HALT

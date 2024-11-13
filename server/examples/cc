@@ -1,0 +1,169 @@
+class CodeGenerator:
+    def __init__(self, ast):
+        self.ast = ast
+        self.code = []
+        self.accumulator = 0  # For simulation
+        self.registers = {'eax': 0, 'ebx': 0}
+        self.output = ""  # Captured output during simulation
+        self.variables = {}
+        self.label_count = 0
+
+    def generate(self):
+        self.code.append(".data")
+        self.code.append('hello db "Hello, World",0')
+        self.code.append(".code")
+        self.code.append("main PROC")
+        for node in self.ast:
+            if type(node) == PushNode:
+                self.code.append(f"    INSERT {node.value}")
+            elif type(node) == AddNode:
+                self.code.append("    pop eax")
+                self.code.append("    pop ebx")
+                self.code.append("    add eax, ebx")
+                self.code.append("    INSERT eax")
+            elif type(node) == SubNode:
+                self.code.append("    pop eax")
+                self.code.append("    pop ebx")
+                self.code.append("    sub eax, ebx")
+                self.code.append("    INSERT eax")
+            elif type(node) == MulNode:
+                self.code.append("    pop eax")
+                self.code.append("    pop ebx")
+                self.code.append("    imul ebx")
+                self.code.append("    INSERT eax")
+            elif type(node) == DivNode:
+                self.code.append("    pop eax")
+                self.code.append("    pop ebx")
+                self.code.append("    cdq")  # Sign-extend eax into edx for division
+                self.code.append("    idiv ebx")
+                self.code.append("    INSERT eax")
+            elif type(node) == PrintNode:
+                self.code.append("    mov eax, 4")
+                self.code.append("    mov ebx, 1")
+                self.code.append("    lea ecx, hello")
+                self.code.append("    mov edx, 13")
+                self.code.append("    int 80h")  # For Windows, replace this with a proper print call
+            elif type(node) == HaltNode:
+                self.code.append("    mov eax, 1")
+                self.code.append("    mov ebx, 0")
+                self.code.append("    int 80h")  # For Windows, this would also be different
+            elif isinstance(node, IfNode):
+                self.generate_if(node)
+            elif isinstance(node, AssignmentNode):
+                self.generate_assignment(node)
+            elif isinstance(node, VariableNode):
+                self.generate_variable_access(node)
+
+        self.code.append("main ENDP")
+        self.code.append("END main")
+        return '\n'.join(self.code)
+
+    def generate_if(self, node):
+        label_else = f"L_else_{self.label_count}"
+        label_end = f"L_end_{self.label_count}"
+        self.label_count += 1
+
+        # Generate condition code
+        self.generate_condition(node.condition)
+        self.code.append("    pop eax")
+        self.code.append("    test eax, eax")
+        self.code.append(f"    jz {label_else}")
+
+        # Generate true block
+        for stmt in node.true_block:
+            self.generate_statement(stmt)
+        self.code.append(f"    jmp {label_end}")
+
+        # Generate else block
+        self.code.append(f"{label_else}:")
+        if node.false_block:
+            for stmt in node.false_block:
+                self.generate_statement(stmt)
+
+        self.code.append(f"{label_end}:")
+
+
+    def simulate(self):
+        stack = []
+        for node in self.ast:
+            try:
+                if isinstance(node, PushNode):
+                    stack.append(node.value)
+                elif isinstance(node, AddNode):
+                    if len(stack) >= 2:
+                        b = stack.pop()
+                        a = stack.pop()
+                        result = a + b
+                        stack.append(result)
+                        self.accumulator = result
+                        self.registers['eax'] = result
+                    else:
+                        self.output += "Error: Not enough values on the stack for ADD\n"
+                elif isinstance(node, SubNode):
+                    if len(stack) >= 2:
+                        b = stack.pop()
+                        a = stack.pop()
+                        result = a - b
+                        stack.append(result)
+                        self.accumulator = result
+                        self.registers['eax'] = result
+                    else:
+                        self.output += "Error: Not enough values on the stack for SUB\n"
+                elif isinstance(node, MulNode):
+                    if len(stack) >= 2:
+                        b = stack.pop()
+                        a = stack.pop()
+                        result = a * b
+                        stack.append(result)
+                        self.accumulator = result
+                        self.registers['eax'] = result
+                    else:
+                        self.output += "Runtime Error: Stack underflow in MUL operation\n"
+                elif isinstance(node, DivNode):
+                    if len(stack) >= 2:
+                        b = stack.pop()
+                        a = stack.pop()
+                        if b == 0:
+                            self.output += "Runtime Error: Division by zero\n"
+                            break
+                        result = a / b
+                        stack.append(result)
+                        self.accumulator = result
+                        self.registers['eax'] = result
+                    else:
+                        self.output += "Runtime Error: Stack underflow in DIV operation\n"
+                elif isinstance(node, PrintNode):
+                    message = node.message
+                    # If there's a value on the stack, append it to the message
+                    if stack and message.lower().startswith("final result"):
+                        current_value = stack[-1]  # Get last value without popping
+                        # Format number to handle both int and float
+                        if isinstance(current_value, float):
+                            formatted_value = f"{current_value:.6f}"
+                        else:
+                            formatted_value = str(current_value)
+                        self.output += f"{message} {formatted_value}\n"
+                    else:
+                        self.output += f"{message}\n"
+                elif isinstance(node, HaltNode):
+                    break
+            except Exception as e:
+                if "division by zero" in str(e).lower():
+                    self.output += "Runtime Error: Division by zero\n"
+                else:
+                    self.output += f"Runtime Error: {str(e)}\n"
+                break
+
+        # Add final state to output
+        if stack:
+            self.output += f"\nFinal Stack: {stack}\n"
+        self.output += f"Final Register State:\n"
+        self.output += f"Accumulator: {self.accumulator}\n"
+        self.output += f"Registers: {self.registers}\n"
+        
+        return {
+            'accumulator': self.accumulator,
+            'registers': self.registers,
+            'stack': stack,
+            'output': self.output.strip()
+        }

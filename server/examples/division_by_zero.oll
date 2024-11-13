@@ -1,0 +1,5 @@
+PUSH 20
+PUSH 0
+DIV        // Error: Division by zero
+PRINT "This won't execute"
+HALT

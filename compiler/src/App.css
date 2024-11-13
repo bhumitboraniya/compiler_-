@@ -1,0 +1,75 @@
+.phases {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.phase-block {
+  display: flex;
+  align-items: center;
+}
+
+.block {
+  position: relative;
+  padding: 15px 25px;
+  border: 2px solid #007bff;
+  margin: 0 10px;
+  font-weight: bold;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  overflow: hidden;
+  color: #000;
+}
+
+.block.completed {
+  background: linear-gradient(to right, #007bff 0%, #007bff 0%, #f0f0f0 0%);
+  animation: progress-fill 3s linear forwards; /* Triggers the smooth fill effect */
+}
+
+.arrow {
+  font-size: 2rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.arrow.visible {
+  opacity: 1;
+}
+
+/* Smooth fill effect */
+@keyframes progress-fill {
+  0% {
+    background: linear-gradient(to right, #007bff 0%, #f0f0f0 0%);
+  }
+  10% {
+    background: linear-gradient(to right, #007bff 10%, #f0f0f0 10%);
+  }
+  20% {
+    background: linear-gradient(to right, #007bff 20%, #f0f0f0 20%);
+  }
+  30% {
+    background: linear-gradient(to right, #007bff 30%, #f0f0f0 30%);
+  }
+  40% {
+    background: linear-gradient(to right, #007bff 40%, #f0f0f0 40%);
+  }
+  50% {
+    background: linear-gradient(to right, #007bff 50%, #f0f0f0 50%);
+  }
+  60% {
+    background: linear-gradient(to right, #007bff 60%, #f0f0f0 60%);
+  }
+  70% {
+    background: linear-gradient(to right, #007bff 70%, #f0f0f0 70%);
+  }
+  80% {
+    background: linear-gradient(to right, #007bff 80%, #f0f0f0 80%);
+  }
+  90% {
+    background: linear-gradient(to right, #007bff 90%, #f0f0f0 90%);
+  }
+  100% {
+    background: linear-gradient(to right, #007bff 100%, #f0f0f0 100%);
+    color: #fff;
+  }
+}

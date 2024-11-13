@@ -1,0 +1,5 @@
+PUSH 10
+PUSH 5
+ADD
+PRINT "No HALT statement"
+// Missing HALT - should cause error

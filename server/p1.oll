@@ -1,0 +1,5 @@
+PUSH 10
+PUSH 7
+ADD
+PRIN "Hello, World"
+HALT

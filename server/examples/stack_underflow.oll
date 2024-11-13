@@ -1,0 +1,4 @@
+PUSH 10
+ADD        // Error: ADD requires two values on stack
+PRINT "This won't execute"
+HALT
