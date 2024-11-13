@@ -32,7 +32,7 @@ npm run dev
 
 
 ```
-Configuration
+## Configuration
 Tailwind CSS: The project is configured to use Tailwind for styling. Adjust styles in tailwind.config.js as needed.
 TypeScript: Adjust compiler options in tsconfig.json for custom TypeScript configurations.
 Usage
